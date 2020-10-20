@@ -375,5 +375,48 @@ pprint(lda_model.show_topics(num_topics=num_topics, num_words=15, formatted=True
 ```
 We can display as many words per topic as we wish. In the example above we used 15.
 
+Let us save the final model:
+```python
+from gensim.test.utils import datapath
+
+temp_file = datapath("/LDAModel")
+lda_model.save(temp_file)
+```
+Now let's prepare a table with all documents and their topics distribution.
+```python
+
+
+def topics_document_to_dataframe(topics_document, num_topics):
+    res = pd.DataFrame(columns=range(num_topics))
+    for topic_weight in topics_document:
+        res.loc[0, topic_weight[0]] = topic_weight[1]
+    return res
+
+# define the allocation to topics per document
+topics1 = [lda_model[corpus1[i]] for i in range(len(btext1))]
+
+document_topic_lda = \
+pd.concat([topics_document_to_dataframe(topics_document, num_topics=num_topics) for topics_document in topics1]) \
+  .reset_index(drop=True).fillna(0)
+```
+
+We will add more data to our table now: file names, years, and decades.
+```python
+filenames_list = df['Filename'].tolist()
+document_topic_lda['Filename']=filenames_list
+
+# binning Year into Decade
+bins = [1980, 1990, 2000, 2010]
+names = ['1', '2', '3', '4']
+
+d = dict(enumerate(names, 1))
+
+df['Decade'] = np.vectorize(d.get)(np.digitize(df['Year'], bins))
+```
+
+Finally, we can export our table:
+```python
+document_topic_lda.to_csv('documents_topics.csv', index=False)
+```
 > Version 1.0, edited 10/20/2020
 > Written with [StackEdit](https://stackedit.io/).
