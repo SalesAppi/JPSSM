@@ -1,5 +1,6 @@
 # Machine Learning Approach for Conducting Sales Literature Reviews: An Application to the Forty Years of JPSSM
 
+
 This repository hosts the code and files used in preparing the manuscript. The code is provided in this very document and divided into separate segments which follow the Figure 2 (same figuer as in this repository). The code can be pasted to Google Collaboratory (https://colab.research.google.com) and run there step by step. If you want to run it on your own machine, we would recommend using [Anaconda](https://docs.anaconda.com/anaconda/install/) and Jupter Notebooks.
 
 The effects of the project (interactive charts & application) are available on our [website](https://salesai.online). The application showcases the use of classification model and follows Figure 2 from the paper.
@@ -423,5 +424,32 @@ Finally, we can export our table:
 ```python
 document_topic_lda.to_csv('documents_topics.csv', index=False)
 ```
+## Similarities (7)
+Now, as we have the model ready, we can classify previously unseen documents. Let's load a sample text document:
+```python
+test_file = codecs.open(r'/test file.txt', encoding='utf-8', errors='ignore').read()
+```
+Next, we should apply the pre-processing steps (similarly as above):
+```python
+body_text = test_file.strip().replace('  ', ' ')
+body_text = body_text.replace('\n', ' ').replace('\r', '')
+body_text = sub(pattern=r"\d", repl=r" ", string=body_text)
+translator = str.maketrans(' ',' ', string.punctuation)
+body_text = body_text.translate(translator)
+body_text = os.linesep.join([s for s in body_text.splitlines() if s])
+```
+In the next step, we present the sample text to the model:
+```python
+raw = body_text.lower()
+raw = normalize(raw)
+raw = row.split()
+vec_bow = original.doc2bow(raw)
+vec_lda = lda_model[vec_bow]
+```
+And display the probability vector:
+```python
+vec_lda
+```
+Note that the output is presented as a list of tuples.
 > Version 1.0, edited 10/30/2020
 > Written with [StackEdit](https://stackedit.io/).
