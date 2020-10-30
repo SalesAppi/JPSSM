@@ -1,6 +1,13 @@
-
 # Machine Learning Approach for Conducting Sales Literature Reviews: An Application to the Forty Years of JPSSM
-This repository hosts the files used in preparing the manuscript. The code is divided into separate segments which follow the Figure 3A. The code can be pasted to Google Collaboratory (https://colab.research.google.com) and run there step by step. If you want to run it on your own machine, we would recommend using [Anaconda](https://docs.anaconda.com/anaconda/install/) and Jupter Notebooks.
+
+This repository hosts the code and files used in preparing the manuscript. The code is provided in this very document and divided into separate segments which follow the Figure 2 (same figuer as in this repository). The code can be pasted to Google Collaboratory (https://colab.research.google.com) and run there step by step. If you want to run it on your own machine, we would recommend using [Anaconda](https://docs.anaconda.com/anaconda/install/) and Jupter Notebooks.
+
+The effects of the project (interactive charts & application) are available on our [website](https://salesai.online). The application showcases the use of classification model and follows Figure 2 from the paper.
+If you would like to run the application locally on your computer, fork and clone the repository. Have a look at friendly [GitHub tutorials](https://guides.github.com/activities/hello-world/) if you are a novice to this.
+
+Once you have the repository on your local machine, you need to set up Python environment. Have a look at this short [tutorial](https://docs.python-guide.org/dev/virtualenvs/) - it offers step by step congfiguration of the environment (you can stop at 'Other Notes').
+
+
 ## The beginning
 The project starts with collecting the PDF version of articles we want to analyze. Create a folder to store the documents (_PATH_TO_PDFs_). In the next step we will convert them to XML versions.
 ## Requirements
@@ -24,13 +31,14 @@ Mind that you will need some space on your disk (for local development).
 The process is shown below.
 ![The process flow](https://raw.githubusercontent.com/SalesAppi/JPSSM/master/Process_figure.png)
 
-## General preparations
+## Stage 1
+### General preparations
 For the users without prior experience in coding, please consider that some packages used in modeling need to be installed in Google Colab before the first use. Please install them one at a time using _pip_ command:
 ```bash
 pip install gensim
 pip install nltk
 ```
-## Prepare the documents
+### Corpus preparation
 First, we need to parse the XML documents in order to extract the text and record the year of publication. We will prepare a script which will compile a data table for modeling.
 We will need several libraries:
 ```python
@@ -42,7 +50,7 @@ import string
 import time
 import re
 ```
-Next we will define basic functions.
+Next we will define basic functions which also pre-process the text (Stage 2, point 1).
 ```python
 def get_article_body(article_file, tag_path_elements=None):
 
@@ -56,17 +64,13 @@ def get_article_body(article_file, tag_path_elements=None):
     tag_location = '/'.join(tag_path_elements)
     body = article_root.xpath(tag_location)
     body_text = et.tostring(body[0], encoding='unicode', method='text')
-
-    # clean up text: rem white space, new line marks, blank lines
    
     
     body_text = body_text.strip().replace('  ', ' ')
     body_text = re.sub(r'\b(-)\b', "_", body_text)
-    # fix soft hyphen
     body_text = body_text.replace(u'\xad', "-")
-    # minus sign
     body_text = body_text.replace(u'\u2212', "-")
-    body_text = body_text.replace('-\n','') #hypenation fix
+    body_text = body_text.replace('-\n','')
     body_text = body_text.replace('\n', ' ').replace('\r', '')
     
     
@@ -183,7 +187,7 @@ And save the table:
 ```python
 df.to_csv('df_tab.tsv', sep =  '\t', index=False)
 ```
-## Preparing the LDA model
+## Stage 2
 
 We start off by collecting the packages we will be using.
 ```python
@@ -252,6 +256,7 @@ Create a list of documents to analyze.
 ```python
 papers_list = df['Body'].tolist()
 ```
+### Tokenization and lemmatization (2)
 Now we will tokenize and lemmatize the documents.
 ```python
 from nltk import stem
@@ -272,7 +277,7 @@ for i in papers_list:
     lemmatized_tokens = [lemmatizer.lemmatize(i) for i in stopped_tokens]
     text1.append(lemmatized_tokens)
 ```
-
+### Collocation (3)
 In the next step, we will calculate the word frequency and create bigrams
 ```python
 # Define a frequency variable to store the number of occurrences of the word
@@ -297,7 +302,7 @@ for idx in range(len(ptext1)):
             ptext1[idx].append(token)
 btext1 = [bigram1[line] for line in ptext1]
 ```
-
+### Creating essential inputs (4)
 Create dictionary and corpus.
 ```python
 dictionary1 = corpora.Dictionary(btext1)
@@ -307,7 +312,7 @@ dictionary1.filter_extremes(no_below=20, no_above=0.5)
 
 corpus1 = [dictionary1.doc2bow(text) for text in btext1]
 ```
-
+### Stage 3
 The part below simulates the runs of LDA model to find minimum coherence.
 ```
 from tqdm import tqdm
@@ -418,5 +423,5 @@ Finally, we can export our table:
 ```python
 document_topic_lda.to_csv('documents_topics.csv', index=False)
 ```
-> Version 1.0, edited 10/20/2020
+> Version 1.0, edited 10/30/2020
 > Written with [StackEdit](https://stackedit.io/).
