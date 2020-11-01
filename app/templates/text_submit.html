@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <!-- Favicon -->
+    <!--link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}"-->
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script type = "text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script type = "text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type = "text/javascript"  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Datatable -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script type = "text/javascript"  src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type = "text/javascript"  src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type = "text/javascript"  src="https://cdn.datatables.net/plug-ins/1.10.15/dataRender/datetime.js"></script>
+    <meta charset="UTF-8">
+  </head>
+  <STYLE type="text/css">
+    h2 { text-align: center}
+  </STYLE>
+  <body>
+    <h2>Text analysis</h2>
+    <p>Paste the text you want to analyze inside the form below and hit 'Submit text' button. You may paste a long text (we tested it up to 20.0000 words, roughly 150.000 characters). Note that the model has been developed on bodies of the JPSSM articles. Hence, avoid pasting a text with a list of references.</p>
+    <div class="card">
+      <div class="card-body">
+        <form method="post">
+          <textarea class="form-control" rows="5" name="user_txt"></textarea>
+          <button class="btn btn-success mt-2">Submit text</button>
+        </form>
+        <div class="mt-4">
+          {% if request.method == 'POST'%}
+            <table id="results" class="display table nowrap responsive" style="width: 100%">
+              <thead>
+                <tr>
+                  {% for header in result.keys() %}
+                    <th> {{header}}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                
+                  <tr>
+                    {% for i in dane %}
+                    <td> {{ i }} </td>
+                    {% endfor %}
+                  </tr>
+
+              </tbody>
+            </table>
+            <p>Note: weights below .07 should be considered not significant.</p>
+            <p>Tables below are showing top 10 references from 3 topics with the highest match.</p>
+        </div>
+<!-- Insert table 1 with topic results -->
+            <div class="mt-8">
+            <table id="topics" class="display table nowrap responsive" style="width: 100%">
+              <thead>
+                <tr>
+                    {% for head in to_display_dict.keys() %}
+                      <th> {{head}}</th>
+                    {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                  {% for row in result_records %}
+                  <tr>
+                    {% for cell in row %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+            </div>
+            <div>
+              <table id="topics1" class="display table nowrap responsive" style="width: 100%">
+                <thead>
+                  <tr>
+                      {% for head in to_display_dict2.keys() %}
+                        <th> {{head}}</th>
+                      {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for row in result_records2 %}
+                    <tr>
+                      {% for cell in row %}
+                      <td>{{ cell }}</td>
+                      {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <table id="topics2" class="display table nowrap responsive" style="width: 100%">
+                <thead>
+                  <tr>
+                      {% for head in to_display_dict3.keys() %}
+                        <th> {{head}}</th>
+                      {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for row in result_records3 %}
+                    <tr>
+                      {% for cell in row %}
+                      <td>{{ cell }}</td>
+                      {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>>
+            </div>
+              {% endif %}
+        </div>
+      </div>
+    </div>
+ 
+
+
+  </body>
+  <script type="text/javascript">
+    $('#topics').DataTable();
+    $('#topics1').DataTable();
+    $('#topics2').DataTable();
+  </script>
+</html>
