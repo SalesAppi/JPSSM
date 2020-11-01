@@ -6,7 +6,18 @@ This repository hosts the code and files used in preparing the manuscript. The c
 The effects of the project (interactive charts & application) are available on our [website](https://salesai.online). The application showcases the use of classification model and follows Figure 2 from the paper.
 If you would like to run the application locally on your computer, fork and clone the repository. Have a look at friendly [GitHub tutorials](https://guides.github.com/activities/hello-world/) if you are a novice to this.
 
-Once you have the repository on your local machine, you need to set up Python environment. Have a look at this short [tutorial](https://docs.python-guide.org/dev/virtualenvs/) - it offers step by step congfiguration of the environment (you can stop at 'Other Notes').
+Once you have the repository on your local machine, you need to set up Python environment. Have a look at this short [tutorial](https://docs.python-guide.org/dev/virtualenvs/) - it offers step by step congfiguration of the environment (apply the steps from 'Lower level: virtualenv' and you can stop at 'Other Notes'). 
+
+After setting up the environment, you can run the application from the terminal:
+```bash
+flask run
+```
+Next, open your browser and type:
+```bash
+localhost:5000/text-submit
+```
+
+Voila!
 
 
 ## The beginning
