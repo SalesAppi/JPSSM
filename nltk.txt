@@ -1,0 +1,5 @@
+wordnet
+punkt
+reuters
+treebank
+dependency_treebank
