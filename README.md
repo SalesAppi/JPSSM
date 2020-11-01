@@ -462,5 +462,3 @@ And display the probability vector:
 vec_lda
 ```
 Note that the output is presented as a list of tuples.
-> Version 1.0, edited 10/30/2020
-> Written with [StackEdit](https://stackedit.io/).
