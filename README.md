@@ -3,6 +3,12 @@
 
 This repository hosts the code and files used in preparing the manuscript. The code is provided in this very document and divided into separate segments which follow the Figure 2 (same figuer as in this repository). The code can be pasted to Google Collaboratory (https://colab.research.google.com) and run there step by step. If you want to run it on your own machine, we would recommend using [Anaconda](https://docs.anaconda.com/anaconda/install/) and Jupter Notebooks.
 
+How to cite the work:
+```bash
+Hideaki Kitanaka, Piotr Kwiatek, Nikolaos G Panagopoulos. (Forthcoming). Introducing a New, Machine Learning Process, and Online Tools for Conducting Sales Literature Reviews: An Application to the Forty Years of JPSSM, Journal of Personal Selling and Sales Management.
+Doi: 10.1080/08853134.2021.1935976
+```
+
 The effects of the project (interactive charts & application) are available on our [website](https://salesai.online). The application showcases the use of classification model and follows Figure 2 from the paper.
 If you would like to run the application locally on your computer, fork and clone the repository. Have a look at friendly [GitHub tutorials](https://guides.github.com/activities/hello-world/) if you are a novice to this.
 
