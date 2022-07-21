@@ -5,7 +5,7 @@ This repository hosts the code and files used in preparing the manuscript. The c
 
 How to cite the work:
 ```bash
-Hideaki Kitanaka, Piotr Kwiatek, Nikolaos G Panagopoulos. (Forthcoming). Introducing a New, Machine Learning Process, and Online Tools for Conducting Sales Literature Reviews: An Application to the Forty Years of JPSSM, Journal of Personal Selling and Sales Management.
+Hideaki Kitanaka, Piotr Kwiatek, Nikolaos G Panagopoulos. (2021). Introducing a New, Machine Learning Process, and Online Tools for Conducting Sales Literature Reviews: An Application to the Forty Years of JPSSM, Journal of Personal Selling and Sales Management 41(4), 351-368.
 Doi: 10.1080/08853134.2021.1935976
 ```
 
